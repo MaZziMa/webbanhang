@@ -14,20 +14,31 @@ class CategoryController
         $this->categoryModel = new CategoryModel($this->db);
     }
 
-    public function list()
+    // Kiểm tra người dùng có quyền admin không
+    private function isAdmin() {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->role !== 'admin') {
+            // Chuyển hướng về trang chính nếu không phải admin
+            header('Location: /webbanhang/product');
+            exit;
+        }
+        return true;
+    }    public function list()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
         $categories = $this->categoryModel->getCategoriesWithProductCount();
         include 'app/views/category/list.php';
     }
 
     public function add()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
         $errors = [];
         include 'app/views/category/add.php';
     }
 
     public function save()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name'] ?? '');
             
@@ -49,10 +60,10 @@ class CategoryController
             
             include 'app/views/category/add.php';
         }
-    }
-
-    public function edit($id)
+    }    public function edit($id)
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if (!$id) {
             header('Location: /webbanhang/category/list');
             exit();
@@ -67,10 +78,10 @@ class CategoryController
         }
 
         include 'app/views/category/edit.php';
-    }
-
-    public function update()
+    }    public function update()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $name = trim($_POST['name'] ?? '');
@@ -94,10 +105,10 @@ class CategoryController
             $category = $this->categoryModel->getCategoryById($id);
             include 'app/views/category/edit.php';
         }
-    }
-
-    public function delete($id)
+    }    public function delete($id)
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if (!$id) {
             header('Location: /webbanhang/category/list');
             exit();

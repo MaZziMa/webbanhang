@@ -401,36 +401,137 @@
             opacity: 0.9;
         }
 
-        @media (max-width: 768px) {
-            .banner-title {
-                font-size: 2rem;
-            }
-            
-            .banner-subtitle {
-                font-size: 1rem;
-            }
-            
-            .banner-section {
-                height: 300px;
-            }
-            
-            .banner-carousel .carousel-item {
-                height: 300px;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .stats-item {
-                margin: 0 1rem;
-            }
-            
-            .main-container {
-                margin: 1rem 0;
-                padding: 1rem;
-            }
+        /* Add to existing styles */
+        
+        /* Dropdown styles */
+        .dropdown-menu {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: none;
+            padding: 0.8rem 0;
+            margin-top: 0.5rem;
         }
+        
+        .dropdown-item {
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            width: 1.2rem;
+            text-align: center;
+        }
+        
+        .dropdown-divider {
+            margin: 0.5rem 0;
+        }
+        
+        /* Pagination styles */
+        .pagination-container {
+            margin: 2rem 0 1rem;
+        }
+        
+        .pagination .page-link {
+            color: var(--dark-color);
+            border-radius: 25px;
+            margin: 0 0.2rem;
+            border: none;
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .pagination .page-link:hover:not(.active) {
+            background: rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .pagination .page-item.disabled .page-link {
+            color: #adb5bd;
+            background-color: #f8f9fa;
+        }
+        
+        /* User management table styles */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+        
+        /* Add these styles for login/registration */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+        
+        .modal-header {
+            border-bottom: none;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            padding: 1.5rem;
+        }
+        
+        .form-control, .input-group-text {
+            border-radius: 25px;
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--border-color);
+        }
+        
+        .input-group > .form-control {
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+        
+        .input-group > .input-group-text {
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            background-color: #f8f9fa;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 1rem auto;
+            display: block;
+            border: 3px solid var(--primary-color);
+        }
+        
+        /* Existing styles remain... */
     </style>
 </head>
 <body>
@@ -447,9 +548,21 @@
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/webbanhang/Product" target="_blank">
-                        <i class="fas fa-cog"></i> Quản lý
-                    </a>
+                    <?php if (isset($_SESSION['user']) && $_SESSION['user']->role === 'admin'): ?>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog"></i> Quản lý
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="/webbanhang/Product"><i class="fas fa-box"></i> Quản lý sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="/webbanhang/category"><i class="fas fa-tag"></i> Quản lý danh mục</a></li>
+                            <li><a class="dropdown-item" href="/webbanhang/user"><i class="fas fa-users"></i> Quản lý người dùng</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/webbanhang/account/profile"><i class="fas fa-user-cog"></i> Hồ sơ cá nhân</a></li>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
                     <a class="nav-link" href="/webbanhang/product/cart">
                         <i class="fas fa-shopping-cart"></i> 
                         Giỏ hàng 
@@ -457,10 +570,159 @@
                             <span class="badge cart-badge"><?= array_sum($_SESSION['cart']) ?></span>
                         <?php endif; ?>
                     </a>
+                    
+                    <?php if (isset($_SESSION['user'])): ?>
+                    <!-- User is logged in -->
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i> 
+                            <?= htmlspecialchars($_SESSION['user']->fullname) ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/webbanhang/account/profile"><i class="fas fa-id-card"></i> Hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="/webbanhang/order/history"><i class="fas fa-history"></i> Lịch sử đơn hàng</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/webbanhang/account/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                    <?php else: ?>
+                    <!-- User is not logged in -->
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-user-lock"></i> Đăng nhập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <form id="loginForm" action="/webbanhang/account/login" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <div id="loginError" class="alert alert-danger d-none"></div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <p class="mb-0">Chưa có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Đăng ký ngay</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel"><i class="fas fa-user-plus"></i> Đăng ký tài khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Register Form -->
+                    <form id="registerForm" action="/webbanhang/account/register" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="reg_username" class="form-label">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="reg_username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Họ và tên</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reg_password" class="form-label">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" id="reg_password" name="password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="toggleRegPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Xác nhận mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="avatar" class="form-label">Ảnh đại diện</label>
+                            <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*">
+                            <div class="text-center mt-2">
+                                <img src="/webbanhang/uploads/avatars/default.png" id="avatarPreview" class="avatar-preview">
+                            </div>
+                        </div>
+                        <div id="registerError" class="alert alert-danger d-none"></div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-user-plus"></i> Đăng ký
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <p class="mb-0">Đã có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Đăng nhập ngay</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Banner Section -->
     <div class="container mt-4">
@@ -604,6 +866,7 @@
                              data-category="<?= htmlspecialchars($product->category_name ?? '') ?>" 
                              data-price="<?= $product->price ?>">
                             <div class="card product-card">
+                                <!-- Product card contents remain the same -->
                                 <div class="product-image">
                                     <img src="/webbanhang/<?= htmlspecialchars($product->image) ?>" 
                                          alt="<?= htmlspecialchars($product->name) ?>"
@@ -638,6 +901,26 @@
                 <?php endif; ?>
             </div>
 
+            <!-- Pagination -->
+            <div class="pagination-container mt-5" id="paginationContainer">
+                <nav aria-label="Phân trang sản phẩm">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled" id="prevPage">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="fas fa-chevron-left"></i> Trước
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <!-- Additional page numbers will be added by JS -->
+                        <li class="page-item" id="nextPage">
+                            <a class="page-link" href="#">
+                                Sau <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
             <!-- No Results -->
             <div class="empty-state d-none" id="noResults">
                 <i class="fas fa-search"></i>
@@ -650,24 +933,166 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Search and Filter functionality
+        // Add this to your existing JavaScript code
         document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+
+            document.getElementById('toggleRegPassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('reg_password');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+
+            document.getElementById('toggleConfirmPassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('confirm_password');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+
+            // Avatar preview
+            document.getElementById('avatar')?.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('avatarPreview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Login form validation and submission
+            document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+                const errorDiv = document.getElementById('loginError');
+                
+                // Basic validation
+                if (!usernameInput.value.trim() || !passwordInput.value.trim()) {
+                    errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin đăng nhập.';
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+                
+                // Submit the form
+                this.submit();
+            });
+
+            // Register form validation and submission
+            document.getElementById('registerForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const usernameInput = document.getElementById('reg_username');
+                const fullnameInput = document.getElementById('fullname');
+                const emailInput = document.getElementById('email');
+                const phoneInput = document.getElementById('phone');
+                const passwordInput = document.getElementById('reg_password');
+                const confirmPasswordInput = document.getElementById('confirm_password');
+                const errorDiv = document.getElementById('registerError');
+                
+                // Basic validation
+                if (!usernameInput.value.trim() || !fullnameInput.value.trim() || 
+                    !emailInput.value.trim() || !phoneInput.value.trim() || 
+                    !passwordInput.value.trim() || !confirmPasswordInput.value.trim()) {
+                    errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin đăng ký.';
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+                
+                // Password confirmation validation
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    errorDiv.textContent = 'Mật khẩu xác nhận không khớp.';
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+                
+                // Email format validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailInput.value)) {
+                    errorDiv.textContent = 'Định dạng email không hợp lệ.';
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+                
+                // Phone format validation (Vietnamese phone numbers often start with 0 and have 10 digits)
+                const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})$/;
+                if (!phoneRegex.test(phoneInput.value)) {
+                    errorDiv.textContent = 'Định dạng số điện thoại không hợp lệ.';
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+                
+                // Submit the form
+                this.submit();
+            });
+            
+            // Modal handling for switching between login and register
+            const loginModal = document.getElementById('loginModal');
+            const registerModal = document.getElementById('registerModal');
+            
+            if (loginModal && registerModal) {
+                loginModal.addEventListener('hidden.bs.modal', function() {
+                    document.getElementById('loginForm').reset();
+                    document.getElementById('loginError').classList.add('d-none');
+                });
+                
+                registerModal.addEventListener('hidden.bs.modal', function() {
+                    document.getElementById('registerForm').reset();
+                    document.getElementById('registerError').classList.add('d-none');
+                    document.getElementById('avatarPreview').src = '/webbanhang/uploads/avatars/default.png';
+                });
+            }
+
+            // Search and Filter functionality
             const searchInput = document.getElementById('searchProduct');
             const categoryFilter = document.getElementById('categoryFilter');
             const sortFilter = document.getElementById('sortFilter');
             const productsContainer = document.getElementById('productsContainer');
             const noResults = document.getElementById('noResults');
             const loadingSpinner = document.getElementById('loadingSpinner');
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            // Pagination variables
+            let currentPage = 1;
+            const productsPerPage = 6;
+            let totalPages = 1;
+            let filteredProducts = [];
 
             function showLoading() {
                 loadingSpinner.style.display = 'block';
                 productsContainer.style.display = 'none';
                 noResults.classList.add('d-none');
+                paginationContainer.style.display = 'none';
             }
 
             function hideLoading() {
                 loadingSpinner.style.display = 'none';
                 productsContainer.style.display = 'flex';
+                if (filteredProducts.length > 0) {
+                    paginationContainer.style.display = 'block';
+                }
             }
 
             function filterProducts() {
@@ -679,7 +1104,7 @@
                     const sortOption = sortFilter.value;
                     
                     let products = Array.from(document.querySelectorAll('.product-item'));
-                    let visibleCount = 0;
+                    filteredProducts = [];
 
                     // Filter products
                     products.forEach(product => {
@@ -690,8 +1115,8 @@
                         const matchesCategory = !selectedCategory || category.includes(selectedCategory);
                         
                         if (matchesSearch && matchesCategory) {
-                            product.style.display = 'block';
-                            visibleCount++;
+                            product.style.display = 'none'; // Initially hide all, we'll show per page
+                            filteredProducts.push(product);
                         } else {
                             product.style.display = 'none';
                         }
@@ -699,9 +1124,7 @@
 
                     // Sort products
                     if (sortOption) {
-                        const visibleProducts = products.filter(p => p.style.display !== 'none');
-                        
-                        visibleProducts.sort((a, b) => {
+                        filteredProducts.sort((a, b) => {
                             switch(sortOption) {
                                 case 'price-asc':
                                     return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
@@ -715,29 +1138,119 @@
                                     return 0;
                             }
                         });
-
-                        // Reorder DOM elements
-                        visibleProducts.forEach(product => {
-                            productsContainer.appendChild(product);
-                        });
                     }
 
                     // Show/hide no results message
-                    if (visibleCount === 0) {
+                    if (filteredProducts.length === 0) {
                         productsContainer.style.display = 'none';
                         noResults.classList.remove('d-none');
+                        paginationContainer.style.display = 'none';
                     } else {
                         noResults.classList.add('d-none');
+                        paginationContainer.style.display = 'block';
                     }
 
+                    // Reset to first page and update
+                    currentPage = 1;
+                    totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+                    updatePagination();
+                    showProductsForPage(currentPage);
+                    
                     hideLoading();
                 }, 300);
+            }
+            
+            function showProductsForPage(page) {
+                const startIndex = (page - 1) * productsPerPage;
+                const endIndex = Math.min(startIndex + productsPerPage, filteredProducts.length);
+                
+                // Hide all products first
+                filteredProducts.forEach(product => {
+                    product.style.display = 'none';
+                });
+                
+                // Show only products for current page
+                for (let i = startIndex; i < endIndex; i++) {
+                    filteredProducts[i].style.display = 'block';
+                    productsContainer.appendChild(filteredProducts[i]); // Move to ensure correct order
+                }
+            }
+            
+            function updatePagination() {
+                if (totalPages <= 1) {
+                    paginationContainer.style.display = 'none';
+                    return;
+                }
+                
+                // Generate pagination elements
+                const paginationUl = paginationContainer.querySelector('.pagination');
+                paginationUl.innerHTML = '';
+                
+                // Previous button
+                const prevLi = document.createElement('li');
+                prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                prevLi.innerHTML = `
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i> Trước
+                    </a>
+                `;
+                prevLi.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                        showProductsForPage(currentPage);
+                        window.scrollTo({top: productsContainer.offsetTop - 100, behavior: 'smooth'});
+                    }
+                });
+                paginationUl.appendChild(prevLi);
+                
+                // Page numbers
+                const maxPages = 5; // Max page numbers to show
+                const startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+                const endPage = Math.min(totalPages, startPage + maxPages - 1);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageLi = document.createElement('li');
+                    pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    pageLi.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                    pageLi.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        currentPage = i;
+                        updatePagination();
+                        showProductsForPage(currentPage);
+                        window.scrollTo({top: productsContainer.offsetTop - 100, behavior: 'smooth'});
+                    });
+                    paginationUl.appendChild(pageLi);
+                }
+                
+                // Next button
+                const nextLi = document.createElement('li');
+                nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                nextLi.innerHTML = `
+                    <a class="page-link" href="#" aria-label="Next">
+                        Sau <i class="fas fa-chevron-right"></i>
+                    </a>
+                `;
+                nextLi.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                        showProductsForPage(currentPage);
+                        window.scrollTo({top: productsContainer.offsetTop - 100, behavior: 'smooth'});
+                    }
+                });
+                paginationUl.appendChild(nextLi);
             }
 
             // Event listeners
             searchInput.addEventListener('input', filterProducts);
             categoryFilter.addEventListener('change', filterProducts);
             sortFilter.addEventListener('change', filterProducts);
+
+            // Initial filtering and pagination
+            filterProducts();
 
             // Add to cart animation
             document.querySelectorAll('.add-to-cart-form').forEach(form => {

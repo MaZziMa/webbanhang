@@ -12,30 +12,40 @@ class ProductController
         $this->orderModel = new OrderModel($db);
     }
 
+    // Kiểm tra người dùng có quyền admin không
+    private function isAdmin() {
+        if (!isset($_SESSION['user']) || $_SESSION['user']->role !== 'admin') {
+            // Chuyển hướng về trang chính nếu không phải admin
+            header('Location: /webbanhang/product');
+            exit;
+        }
+        return true;
+    }
+
     // Shopping functions
     public function index()
     {
         $products = $this->productModel->getProducts();
         $categories = $this->categoryModel->getCategories();
         include_once 'app/views/product/list.php';
-    }
-
-    // Admin CRUD functions
+    }    // Admin CRUD functions
     public function list()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
         $products = $this->productModel->getProducts();
         include_once 'app/views/product/admin_list.php';
     }
 
     public function add()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
         $categories = $this->categoryModel->getCategories();
         $errors = [];
         include_once 'app/views/product/add.php';
-    }
-
-    public function save()
+    }    public function save()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
             $description = $_POST['description'];
@@ -54,10 +64,10 @@ class ProductController
                 include_once 'app/views/product/add.php';
             }
         }
-    }
-
-    public function edit($id)
+    }    public function edit($id)
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if (!$id) {
             header('Location: /webbanhang/Product');
             exit();
@@ -73,10 +83,10 @@ class ProductController
         }
 
         include_once 'app/views/product/edit.php';
-    }
-
-    public function update()
+    }    public function update()
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $name = $_POST['name'];
@@ -97,10 +107,10 @@ class ProductController
                 include_once 'app/views/product/edit.php';
             }
         }
-    }
-
-    public function delete($id)
+    }    public function delete($id)
     {
+        $this->isAdmin(); // Kiểm tra quyền admin
+        
         if (!$id) {
             header('Location: /webbanhang/Product');
             exit();

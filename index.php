@@ -8,6 +8,7 @@ require_once 'app/models/CategoryModel.php';
 require_once 'app/models/OrderModel.php';
 require_once 'app/controllers/ProductController.php';
 require_once 'app/controllers/CategoryController.php';
+require_once 'app/controllers/AccountController.php';
 
 // Khởi tạo database connection
 $database = new Database();
@@ -132,6 +133,24 @@ switch ($controller) {
             case 'delete':
                 $id = $_GET['id'] ?? null;
                 $categoryController->delete($id);
+                break;
+            default:
+                http_response_code(404);
+                echo "Action not found: " . $action;
+                break;
+        }
+        break;
+          case 'account':
+        $accountController = new AccountController($db);
+        switch ($action) {
+            case 'login':
+                $accountController->login();
+                break;
+            case 'register':
+                $accountController->register();
+                break;
+            case 'logout':
+                $accountController->logout();
                 break;
             default:
                 http_response_code(404);
